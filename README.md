@@ -11,7 +11,7 @@ This action currently supports GitHub-provided Linux, macOS and Windows runners 
 Add the following entry to your Github workflow YAML file:
 
 ```yaml
-uses: kyverno/action-install-cli@v0.1.0
+uses: kyverno/action-install-cli@v0.2.0
 with:
   release: 'v1.9.5' # optional
 ```
@@ -28,7 +28,7 @@ jobs:
     name: Install Kyverno CLI
     steps:
       - name: Install Kyverno CLI
-        uses: kyverno/action-install-cli@v0.1.0
+        uses: kyverno/action-install-cli@v0.2.0
         with:
           release: 'v1.9.5'
       - name: Check install
@@ -47,7 +47,28 @@ jobs:
     name: Install Kyverno CLI
     steps:
       - name: Install Kyverno CLI
-        uses: kyverno/action-install-cli@v0.1.0
+        uses: kyverno/action-install-cli@v0.2.0
+      - name: Check install
+        run: kyverno version
+```
+
+Example using [cosign](https://github.com/sigstore/cosign) verification:
+
+```yaml
+jobs:
+  example:
+    runs-on: ubuntu-latest
+
+    permissions: {}
+
+    name: Install Kyverno CLI
+    steps:
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3.1.1
+      - name: Install Kyverno CLI
+        uses: kyverno/action-install-cli@v0.2.0
+        with:
+          verify: true
       - name: Check install
         run: kyverno version
 ```
@@ -72,7 +93,7 @@ jobs:
           go-version: '1.20'
           check-latest: true
       - name: Install Kyverno CLI
-        uses: kyverno/action-install-cli@v0.1.0
+        uses: kyverno/action-install-cli@v0.2.0
         with:
           release: 'main'
       - name: Check install
@@ -88,6 +109,7 @@ The following optional inputs:
 | `release` | `kyverno` version to use instead of the default. |
 | `install-dir` | directory to place the `kyverno` binary into instead of the default (`$HOME/.kyverno`). |
 | `use-sudo` | set to `true` if `install-dir` location requires sudo privs. Defaults to false. |
+| `verify` | set to `true` to enable [cosign](https://github.com/sigstore/cosign) verification of the downloaded archive. |
 
 ## Security
 
